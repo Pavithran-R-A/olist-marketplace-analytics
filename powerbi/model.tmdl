@@ -1,0 +1,20 @@
+// Power BI-ready semantic specification. Desktop validation unavailable here.
+table fact_orders
+  column order_id
+  column customer_unique_id
+  column customer_state
+  column purchase_ts
+  column order_status
+  column gmv
+  column freight_value
+  column is_late
+  column delivery_days
+  column review_score
+
+table dim_date
+  column date
+  column year
+  column month
+
+relationship fact_orders[purchase_ts] -> dim_date[date]
+

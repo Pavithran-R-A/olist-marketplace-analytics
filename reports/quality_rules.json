@@ -1,0 +1,8 @@
+{
+  "orders_duplicate_keys": 0,
+  "delivery_before_purchase": 0,
+  "delivered_without_delivery_timestamp": 8,
+  "negative_price": 0,
+  "negative_freight": 0,
+  "duplicate_review_order_pairs": 0
+}

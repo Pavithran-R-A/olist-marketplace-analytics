@@ -1,0 +1,19 @@
+{
+  "gmv": 13591643.700012088,
+  "orders": 99441.0,
+  "customers": 96096.0,
+  "aov": 136.6804808882864,
+  "delivered_orders": 96478.0,
+  "cancelled_orders": 625.0,
+  "late_delivery_rate": 0.08111693857667032,
+  "avg_review": 4.0867934152875325,
+  "items_per_order": 1.1328325338643015,
+  "freight": 2251909.5400001667,
+  "late_avg_review": 2.566505678109907,
+  "ontime_avg_review": 4.294310676601906,
+  "review_difference": -1.7278049984919992,
+  "mann_whitney_p": 0.0,
+  "repeat_customers": 2997,
+  "repeat_customer_rate": 0.031187562437562436,
+  "freight_to_gmv": 0.16568338529931917
+}
