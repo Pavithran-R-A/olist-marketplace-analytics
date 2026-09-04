@@ -21,8 +21,8 @@ def analyse() -> dict[str, object]:
     monthly = con.sql("SELECT date_trunc('month', purchase_ts) AS month, SUM(gmv) gmv, COUNT(*) orders FROM fact_orders GROUP BY 1 ORDER BY 1").df()
     category = con.sql("SELECT category, SUM(price) gmv, COUNT(DISTINCT order_id) orders FROM fact_order_items GROUP BY 1 ORDER BY gmv DESC LIMIT 15").df()
     states = con.sql("SELECT customer_state state, SUM(gmv) gmv, COUNT(*) orders, AVG(is_late::INT) late_rate, AVG(review_score) avg_review FROM fact_orders GROUP BY 1 ORDER BY gmv DESC").df()
-    seller = con.sql("SELECT seller_id, SUM(price) gmv, COUNT(DISTINCT order_id) orders, AVG(CASE WHEN fo.order_status='delivered' THEN fo.is_late::INT END) late_rate FROM fact_order_items oi JOIN fact_orders fo USING(order_id) GROUP BY seller_id HAVING COUNT(DISTINCT order_id)>=20 ORDER BY late_rate DESC LIMIT 20").df()
-    review = con.sql("SELECT is_late, AVG(review_score) avg_review, COUNT(*) orders FROM fact_orders WHERE review_score IS NOT NULL AND order_status='delivered' GROUP BY 1").df()
+    seller = con.sql("SELECT seller_id, SUM(price) gmv, COUNT(DISTINCT order_id) orders, AVG(CASE WHEN fo.order_status='delivered' THEN fo.is_late::INT END) late_rate FROM fact_order_items oi JOIN fact_orders fo USING(order_id) GROUP BY seller_id HAVING COUNT(DISTINCT order_id)>=20 ORDER BY late_rate DESC, gmv DESC, seller_id LIMIT 20").df()
+    review = con.sql("SELECT is_late, AVG(review_score) avg_review, COUNT(*) orders FROM fact_orders WHERE review_score IS NOT NULL AND order_status='delivered' GROUP BY 1 ORDER BY is_late").df()
     customers = con.sql("SELECT customer_unique_id, COUNT(*) frequency, SUM(gmv) monetary, date_diff('day', MAX(purchase_ts), (SELECT MAX(purchase_ts) FROM fact_orders)) recency FROM fact_orders GROUP BY 1").df()
     late = review.loc[review.is_late == True, "avg_review"]
     ontime = review.loc[review.is_late == False, "avg_review"]
@@ -44,4 +44,3 @@ def analyse() -> dict[str, object]:
 
 if __name__ == "__main__":
     analyse()
-
