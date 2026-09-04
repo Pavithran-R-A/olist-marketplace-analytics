@@ -1,0 +1,90 @@
+table monthly_kpis
+	lineageTag: 7b1a3bca-547e-4b44-bebc-f43a7e3620f2
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0a3721da-2360-4f85-b1a7-e3decef3a75a
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 46f1e02f-506c-4e86-b1a7-cf4068fa0253
+			defaultHierarchy: LocalDateTable_fe6a0748-0e72-4f9d-b564-abc5cd8cad4b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column gmv
+		dataType: double
+		lineageTag: b67d3880-294b-43ab-bbe4-bad2d6fbd3af
+		summarizeBy: sum
+		sourceColumn: gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column orders
+		dataType: int64
+		formatString: 0
+		lineageTag: dfc3cb75-0561-4386-9cbd-cbe839b2646d
+		summarizeBy: sum
+		sourceColumn: orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column aov
+		dataType: double
+		lineageTag: cf88cdf1-5279-4f62-a380-a12a8f3a8ec1
+		summarizeBy: sum
+		sourceColumn: aov
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gmv_mom
+		dataType: double
+		lineageTag: e6f2642c-a411-4042-b1dd-dfb76adc8085
+		summarizeBy: sum
+		sourceColumn: gmv_mom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column orders_mom
+		dataType: double
+		lineageTag: 647360ce-4844-4438-86cb-8bdf0a0e045f
+		summarizeBy: sum
+		sourceColumn: orders_mom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cumulative_gmv
+		dataType: double
+		lineageTag: c2065d87-6f2f-4268-ac65-fe3c95cff964
+		summarizeBy: sum
+		sourceColumn: cumulative_gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition monthly_kpis = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Pavithran R A\Documents\Codex\2026-09-04\goal-referenced-pasted-text-files-pasted\data\published\monthly_kpis.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"month", type date}, {"gmv", type number}, {"orders", Int64.Type}, {"aov", type number}, {"gmv_mom", type number}, {"orders_mom", type number}, {"cumulative_gmv", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

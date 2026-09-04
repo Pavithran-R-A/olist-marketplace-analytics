@@ -1,0 +1,5 @@
+relationship 46f1e02f-506c-4e86-b1a7-cf4068fa0253
+	joinOnDateBehavior: datePartOnly
+	fromColumn: monthly_kpis.month
+	toColumn: LocalDateTable_fe6a0748-0e72-4f9d-b564-abc5cd8cad4b.Date
+
