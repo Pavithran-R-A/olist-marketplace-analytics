@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "e3ba61f0c0f10eba57c0",
+  "name": "a7a73a900adc908697a6",
   "position": {
     "x": 10,
     "y": 290,
@@ -10,30 +10,11 @@
     "tabOrder": 1
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "monthly_kpis"
-                        }
-                      },
-                      "Property": "gmv"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(monthly_kpis.gmv)",
-              "nativeQueryRef": "Sum of gmv"
-            },
             {
               "field": {
                 "HierarchyLevel": {
@@ -57,7 +38,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Year",
-              "nativeQueryRef": "month Year"
+              "nativeQueryRef": "month Year",
+              "active": true
             },
             {
               "field": {
@@ -82,7 +64,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Quarter",
-              "nativeQueryRef": "month Quarter"
+              "nativeQueryRef": "month Quarter",
+              "active": false
             },
             {
               "field": {
@@ -107,7 +90,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Month",
-              "nativeQueryRef": "month Month"
+              "nativeQueryRef": "month Month",
+              "active": false
             },
             {
               "field": {
@@ -132,8 +116,13 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Day",
-              "nativeQueryRef": "month Day"
-            },
+              "nativeQueryRef": "month Day",
+              "active": false
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
             {
               "field": {
                 "Measure": {
@@ -171,26 +160,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "cf5ffe1a4ed4649d2304",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "monthly_kpis"
-                  }
-                },
-                "Property": "gmv"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "8df8c0a94a50e4545a85",
+        "name": "61d48d412804db63ac84",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -215,7 +185,7 @@
         "type": "Advanced"
       },
       {
-        "name": "6f5ff54b90a1f2a004ff",
+        "name": "5f07d02e9115b4e7e7b5",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -240,7 +210,7 @@
         "type": "Categorical"
       },
       {
-        "name": "1a4e09abc210130914f7",
+        "name": "0de471ac0dcd42bfb327",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -265,7 +235,7 @@
         "type": "Categorical"
       },
       {
-        "name": "1f1922ccb16aee92e268",
+        "name": "07b1032db31a3c36ea15",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -290,7 +260,7 @@
         "type": "Advanced"
       },
       {
-        "name": "ea9043b490772127f56c",
+        "name": "1663d4886e5d4d5efc14",
         "field": {
           "Measure": {
             "Expression": {
@@ -304,7 +274,7 @@
         "type": "Advanced"
       },
       {
-        "name": "429c26ab3fc46cb145d9",
+        "name": "35defbe2db37c01bc677",
         "field": {
           "Measure": {
             "Expression": {

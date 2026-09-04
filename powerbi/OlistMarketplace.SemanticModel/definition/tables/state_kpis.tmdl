@@ -1,0 +1,101 @@
+table state_kpis
+	lineageTag: 3f139541-661a-493a-a7c8-d597b8d70227
+
+	column state
+		dataType: string
+		lineageTag: 377d2a81-c69d-46d5-86ba-da96d8a1d94f
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column orders
+		dataType: int64
+		formatString: 0
+		lineageTag: a0c2f34c-c4e9-4116-9f43-4ac8d844246c
+		summarizeBy: sum
+		sourceColumn: orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv
+		dataType: double
+		lineageTag: e60f226c-09a7-45a6-bc5f-d232ed8da976
+		summarizeBy: sum
+		sourceColumn: gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column late_rate
+		dataType: double
+		lineageTag: 6c0fac82-b552-4e47-a2e9-0d15769e8578
+		summarizeBy: sum
+		sourceColumn: late_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_delivery_days
+		dataType: double
+		lineageTag: 9af50a26-8cdd-48f2-9330-8739374e3d4a
+		summarizeBy: sum
+		sourceColumn: avg_delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column median_delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: fb986d1e-cff1-4df1-aca7-5a091d849d69
+		summarizeBy: sum
+		sourceColumn: median_delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_review
+		dataType: double
+		lineageTag: 5e7d7a6d-d48c-494c-aa35-4f5760823d09
+		summarizeBy: sum
+		sourceColumn: avg_review
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight
+		dataType: double
+		lineageTag: b092b3b3-77cc-4efa-81e3-a2864cc8a3cf
+		summarizeBy: sum
+		sourceColumn: freight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight_to_gmv
+		dataType: double
+		lineageTag: c290c674-7fe3-46d7-926a-28c01f7ad46d
+		summarizeBy: sum
+		sourceColumn: freight_to_gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition state_kpis = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Pavithran R A\Documents\Codex\2026-09-04\goal-referenced-pasted-text-files-pasted\data\published\state_kpis.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"state", type text}, {"orders", Int64.Type}, {"gmv", type number}, {"late_rate", type number}, {"avg_delivery_days", type number}, {"median_delivery_days", Int64.Type}, {"avg_review", type number}, {"freight", type number}, {"freight_to_gmv", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

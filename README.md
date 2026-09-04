@@ -39,8 +39,8 @@ If authentication blocks acquisition, the validation report records that blocker
 
 ## Stack
 
-Python, pandas, NumPy, DuckDB, SQL, SciPy, Plotly, pytest, DAX, Power BI-ready TMDL,
-GitHub Actions, and a static HTML dashboard.
+Python, pandas, NumPy, DuckDB, SQL, SciPy, Plotly, pytest, DAX, Power BI Desktop,
+PBIP/TMDL, GitHub Actions, and a static HTML dashboard.
 
 ## Dataset and terminology
 
@@ -54,7 +54,7 @@ See [metric dictionary](docs/metric_dictionary.md) and [methodology](docs/method
 - Reproducible Python pipeline under `src/`.
 - Data-quality evidence under `reports/` and `docs/`.
 - Recruiter-viewable dashboard under `dashboard/`.
-- Power BI source specification and DAX under `powerbi/`.
+- Power BI Desktop-validated PBIP project and three-page report under `powerbi/`.
 - Tests, CI, insights, resume bullets, and interview walkthrough.
 
 ## Verified headline findings
@@ -69,6 +69,23 @@ See [metric dictionary](docs/metric_dictionary.md) and [methodology](docs/method
 Open the [live dashboard](https://pavithran-r-a.github.io/olist-marketplace-analytics/) or
 `dashboard/index.html` locally. The public repository is available at
 [Pavithran-R-A/olist-marketplace-analytics](https://github.com/Pavithran-R-A/olist-marketplace-analytics).
+
+## Power BI report
+
+The validated project is [OlistMarketplace.pbip](powerbi/OlistMarketplace.pbip). It uses
+Desktop-generated PBIR and TMDL, with imported monthly, category, state, and RFM KPI
+tables. The report contains exactly three pages: Executive Overview, Fulfillment and
+Customer Experience, and Customer and Growth. Real visuals include monthly trends,
+category GMV, state late-rate, RFM customers, and report slicers.
+
+![Executive Overview](docs/images/powerbi-executive-overview.png)
+
+![Fulfillment and Customer Experience](docs/images/powerbi-fulfillment.png)
+
+![Customer and Growth](docs/images/powerbi-customer-growth.png)
+
+Desktop reopened the PBIP successfully with zero Problems. Headline reconciliation
+remains grounded in the verified Python and SQL outputs above.
 
 ## Verification status
 

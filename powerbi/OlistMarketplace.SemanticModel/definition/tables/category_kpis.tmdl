@@ -1,0 +1,100 @@
+table category_kpis
+	lineageTag: 8048fe40-b528-43b4-af33-939009ed795b
+
+	column category
+		dataType: string
+		lineageTag: 49726839-e152-4c77-8ec5-b0942da2a51a
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv
+		dataType: double
+		lineageTag: 17a228b2-a0d8-45af-ba1c-9830d9675945
+		summarizeBy: sum
+		sourceColumn: gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column orders
+		dataType: int64
+		formatString: 0
+		lineageTag: fcf0cddf-8f35-4b99-9879-74467cc4d8ba
+		summarizeBy: sum
+		sourceColumn: orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column items
+		dataType: int64
+		formatString: 0
+		lineageTag: d59028ba-2a6d-4a10-a529-3b0b90619f4d
+		summarizeBy: sum
+		sourceColumn: items
+
+		annotation SummarizationSetBy = Automatic
+
+	column freight
+		dataType: double
+		lineageTag: 2d9bcb83-54da-4626-983a-2ce00da30a77
+		summarizeBy: sum
+		sourceColumn: freight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column aov
+		dataType: double
+		lineageTag: 399df1b4-deb0-4b75-a483-f66be9f1e7eb
+		summarizeBy: sum
+		sourceColumn: aov
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight_to_gmv
+		dataType: double
+		lineageTag: 01a3358c-d60d-49b0-98e9-b51ac68d358a
+		summarizeBy: sum
+		sourceColumn: freight_to_gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cumulative_gmv_share
+		dataType: double
+		lineageTag: e3f012b9-71de-4d6e-b589-0bb52d8386eb
+		summarizeBy: sum
+		sourceColumn: cumulative_gmv_share
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gmv_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 045a2cbf-b8b4-48ce-8ea7-05c4ce6b9853
+		summarizeBy: sum
+		sourceColumn: gmv_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition category_kpis = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Pavithran R A\Documents\Codex\2026-09-04\goal-referenced-pasted-text-files-pasted\data\published\category_kpis.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"category", type text}, {"gmv", type number}, {"orders", Int64.Type}, {"items", Int64.Type}, {"freight", type number}, {"aov", type number}, {"freight_to_gmv", type number}, {"cumulative_gmv_share", type number}, {"gmv_rank", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

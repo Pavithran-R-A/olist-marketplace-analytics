@@ -1,39 +1,20 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "e3ba61f0c0f10eba57c0",
+  "name": "1cc367fb19c208e3b4a1",
   "position": {
     "x": 10,
-    "y": 290,
-    "z": 1,
+    "y": 580,
+    "z": 2,
     "height": 280,
     "width": 280,
-    "tabOrder": 1
+    "tabOrder": 2
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "clusteredColumnChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "monthly_kpis"
-                        }
-                      },
-                      "Property": "gmv"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(monthly_kpis.gmv)",
-              "nativeQueryRef": "Sum of gmv"
-            },
             {
               "field": {
                 "HierarchyLevel": {
@@ -57,7 +38,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Year",
-              "nativeQueryRef": "month Year"
+              "nativeQueryRef": "month Year",
+              "active": true
             },
             {
               "field": {
@@ -82,7 +64,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Quarter",
-              "nativeQueryRef": "month Quarter"
+              "nativeQueryRef": "month Quarter",
+              "active": false
             },
             {
               "field": {
@@ -107,7 +90,8 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Month",
-              "nativeQueryRef": "month Month"
+              "nativeQueryRef": "month Month",
+              "active": false
             },
             {
               "field": {
@@ -132,22 +116,13 @@
                 }
               },
               "queryRef": "monthly_kpis.month.Variation.Date Hierarchy.Day",
-              "nativeQueryRef": "month Day"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "monthly_kpis"
-                    }
-                  },
-                  "Property": "Total GMV"
-                }
-              },
-              "queryRef": "monthly_kpis.Total GMV",
-              "nativeQueryRef": "Total GMV"
-            },
+              "nativeQueryRef": "month Day",
+              "active": false
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
             {
               "field": {
                 "Measure": {
@@ -171,26 +146,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "cf5ffe1a4ed4649d2304",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "monthly_kpis"
-                  }
-                },
-                "Property": "gmv"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "8df8c0a94a50e4545a85",
+        "name": "28eafbcdfbb4ff871fa3",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -215,7 +171,7 @@
         "type": "Advanced"
       },
       {
-        "name": "6f5ff54b90a1f2a004ff",
+        "name": "06ec8c79c0335467a526",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -240,7 +196,7 @@
         "type": "Categorical"
       },
       {
-        "name": "1a4e09abc210130914f7",
+        "name": "87c6651c72855b9947e9",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -265,7 +221,7 @@
         "type": "Categorical"
       },
       {
-        "name": "1f1922ccb16aee92e268",
+        "name": "cc71c11c2554af679940",
         "field": {
           "HierarchyLevel": {
             "Expression": {
@@ -290,21 +246,7 @@
         "type": "Advanced"
       },
       {
-        "name": "ea9043b490772127f56c",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "monthly_kpis"
-              }
-            },
-            "Property": "Total GMV"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "429c26ab3fc46cb145d9",
+        "name": "41530ed785162afc3c7b",
         "field": {
           "Measure": {
             "Expression": {

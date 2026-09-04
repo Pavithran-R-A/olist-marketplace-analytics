@@ -9,13 +9,16 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["monthly_kpis"]
+annotation PBI_QueryOrder = ["monthly_kpis","category_kpis","state_kpis","rfm_segments"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table monthly_kpis
 ref table DateTableTemplate_6bf7589b-c039-408f-b603-0afd3f61a698
 ref table LocalDateTable_fe6a0748-0e72-4f9d-b564-abc5cd8cad4b
+ref table category_kpis
+ref table state_kpis
+ref table rfm_segments
 
 ref cultureInfo en-IN
 
