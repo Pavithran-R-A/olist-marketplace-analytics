@@ -38,7 +38,7 @@ table monthly_kpis
 	column gmv
 		dataType: double
 		lineageTag: b67d3880-294b-43ab-bbe4-bad2d6fbd3af
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: gmv
 
 		annotation SummarizationSetBy = Automatic

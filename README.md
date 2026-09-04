@@ -89,5 +89,5 @@ remains grounded in the verified Python and SQL outputs above.
 
 ## Verification status
 
-This README is updated after the pipeline runs. Claims in the final report distinguish
-verified local outputs from unavailable external or Power BI Desktop validation.
+This README is updated after pipeline and Desktop validation. Claims distinguish
+verified local outputs from external deployment status.

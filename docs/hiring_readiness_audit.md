@@ -24,5 +24,10 @@ Audit basis: repository files, generated reports, and executed commands on 2026-
 
 Repair priorities are executable SQL, cohort/RFM outputs, fixture CI, quality gates,
 dashboard views, and evidence-aligned documentation. Power BI Desktop remains an
-environment-dependent verification gate.
+environment-dependent verification gate in this historical pre-repair snapshot.
 
+## Current repair outcome
+
+The repository now includes a Desktop-validated PBIP/PBIR project. Power BI Desktop
+reopened the project with zero Problems, loaded the order-grain fact table and date
+dimension, calculated explicit DAX measures, and rendered the three report pages.

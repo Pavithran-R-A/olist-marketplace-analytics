@@ -3,3 +3,38 @@ relationship 46f1e02f-506c-4e86-b1a7-cf4068fa0253
 	fromColumn: monthly_kpis.month
 	toColumn: LocalDateTable_fe6a0748-0e72-4f9d-b564-abc5cd8cad4b.Date
 
+relationship 7abb1506-d6b9-4e48-8990-58086bcfa3bb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_orders.purchase_ts
+	toColumn: LocalDateTable_48b4b56f-8b9c-4ffc-a16c-302734664ee4.Date
+
+relationship 6608217f-98b3-4f6d-8bed-a495191847db
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_orders.delivered_ts
+	toColumn: LocalDateTable_169ad735-819b-4a3d-b88c-6fe81a20bc4a.Date
+
+relationship 62c1933e-9709-40c5-8d1f-f87b86201721
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_orders.estimated_ts
+	toColumn: LocalDateTable_023084df-aa64-4353-b500-0db90d175acd.Date
+
+relationship 240b3134-e2cb-4d5e-82c3-bc5b1719a7ba
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.date
+	toColumn: LocalDateTable_0e1590bc-934f-4e0d-9533-06c91818e950.Date
+
+relationship c178d44a-9d34-4669-a3f9-e1b8334023da
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.year_month
+	toColumn: LocalDateTable_bc4be149-daf2-42a6-9f19-03b26786fd22.Date
+
+relationship fact_orders_purchase_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_orders.purchase_ts
+	toColumn: dim_date.date
+
+relationship monthly_kpis_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: monthly_kpis.month
+	toColumn: dim_date.date
+

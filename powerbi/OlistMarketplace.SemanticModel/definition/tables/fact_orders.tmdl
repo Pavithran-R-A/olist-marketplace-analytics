@@ -1,0 +1,189 @@
+table fact_orders
+	lineageTag: 9346c3d1-d633-4d78-8511-472f5ad3b6ea
+
+	measure 'Fact GMV' = SUM(fact_orders[gmv])
+
+	measure Orders = DISTINCTCOUNT(fact_orders[order_id])
+
+	measure Customers = DISTINCTCOUNT(fact_orders[customer_unique_id])
+
+	measure AOV = DIVIDE([Fact GMV], [Orders])
+
+	measure Freight = SUM(fact_orders[freight_value])
+
+	measure 'Freight %' = DIVIDE([Freight], [Fact GMV])
+
+	measure 'Delivered Orders' = CALCULATE([Orders], fact_orders[order_status] = "delivered")
+
+	measure 'Cancelled Orders' = CALCULATE([Orders], fact_orders[order_status] = "canceled")
+
+	measure 'Cancellation Rate' = DIVIDE([Cancelled Orders], [Orders])
+
+	measure 'Late Orders' = CALCULATE([Orders], fact_orders[is_late] = TRUE())
+
+	measure 'Late Delivery Rate' = DIVIDE([Late Orders], [Delivered Orders])
+
+	measure 'Avg Delivery Days' = AVERAGE(fact_orders[delivery_days])
+
+	measure 'Avg Review Score' = AVERAGE(fact_orders[review_score])
+
+	measure '1-Star Rate' = DIVIDE(CALCULATE([Orders], fact_orders[review_score] = 1), CALCULATE([Orders], NOT ISBLANK(fact_orders[review_score])))
+
+	measure 'Repeat Customers' = COUNTROWS(FILTER(VALUES(fact_orders[customer_unique_id]), CALCULATE([Orders]) > 1))
+
+	measure 'Repeat Customer Rate' = DIVIDE([Repeat Customers], [Customers])
+
+	measure 'GMV Previous Month' = CALCULATE([Fact GMV], DATEADD(dim_date[date], -1, MONTH))
+
+	measure 'GMV MoM % (Fact)' = DIVIDE([Fact GMV] - [GMV Previous Month], [GMV Previous Month])
+
+	column order_id
+		dataType: string
+		lineageTag: 2acf83ab-ff77-40ca-b3a1-9e6f217bc3f1
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 71e4a399-be54-48b1-925c-4b3bfdde2218
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		lineageTag: e1a5e77a-a7a1-48c7-8a80-ed98f1704857
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 05f63bc2-05a5-4000-adc5-bf91021a2bac
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_ts
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 73d200e8-4319-4970-b940-dc3b65572132
+		summarizeBy: none
+		sourceColumn: purchase_ts
+
+		variation Variation
+			isDefault
+			relationship: 7abb1506-d6b9-4e48-8990-58086bcfa3bb
+			defaultHierarchy: LocalDateTable_48b4b56f-8b9c-4ffc-a16c-302734664ee4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivered_ts
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 04f91e92-9f1c-4327-979b-2b5e0a371b17
+		summarizeBy: none
+		sourceColumn: delivered_ts
+
+		variation Variation
+			isDefault
+			relationship: 6608217f-98b3-4f6d-8bed-a495191847db
+			defaultHierarchy: LocalDateTable_169ad735-819b-4a3d-b88c-6fe81a20bc4a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_ts
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 902962be-9bcc-4c3b-84f5-12d46f41829a
+		summarizeBy: none
+		sourceColumn: estimated_ts
+
+		variation Variation
+			isDefault
+			relationship: 62c1933e-9709-40c5-8d1f-f87b86201721
+			defaultHierarchy: LocalDateTable_023084df-aa64-4353-b500-0db90d175acd.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 8455704c-17e6-44ea-89f0-dc760d8e6285
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv
+		dataType: double
+		lineageTag: cab53cae-2a31-433e-b9da-9ad72a30ecc5
+		summarizeBy: none
+		sourceColumn: gmv
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight_value
+		dataType: double
+		lineageTag: 9f04b0e6-2192-4095-ad9d-7c08cfae8cf3
+		summarizeBy: sum
+		sourceColumn: freight_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column items
+		dataType: int64
+		formatString: 0
+		lineageTag: 74c849e1-ee24-4fc8-b35d-eb3b8bd2e6a5
+		summarizeBy: sum
+		sourceColumn: items
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_late
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4b4481d6-525d-4dd7-ae18-bde00ff4f566
+		summarizeBy: none
+		sourceColumn: is_late
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: f739e5f9-65a8-4820-9277-87c8ea11d050
+		summarizeBy: sum
+		sourceColumn: delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a7e6955-940c-4990-8e52-aed76cdfd5fd
+		summarizeBy: sum
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_orders = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Pavithran R A\Documents\Codex\2026-09-04\goal-referenced-pasted-text-files-pasted\data\published\fact_orders.csv"),[Delimiter=",", Columns=14, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_id", type text}, {"customer_id", type text}, {"customer_unique_id", type text}, {"customer_state", type text}, {"purchase_ts", type datetime}, {"delivered_ts", type datetime}, {"estimated_ts", type datetime}, {"order_status", type text}, {"gmv", type number}, {"freight_value", type number}, {"items", Int64.Type}, {"is_late", type logical}, {"delivery_days", Int64.Type}, {"review_score", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

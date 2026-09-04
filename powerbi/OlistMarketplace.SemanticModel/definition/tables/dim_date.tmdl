@@ -1,0 +1,82 @@
+table dim_date
+	lineageTag: f662aeca-7d89-4169-bb56-c3fd7fae8a7c
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bc46f7ce-1750-47bb-a843-d8ef84cd0b64
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 240b3134-e2cb-4d5e-82c3-bc5b1719a7ba
+			defaultHierarchy: LocalDateTable_0e1590bc-934f-4e0d-9533-06c91818e950.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d0ecedc-de61-4879-9428-71d8d79f5aad
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 6fd42bd9-15aa-4fbc-829a-8c1388155e32
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_num
+		dataType: int64
+		formatString: 0
+		lineageTag: b5b5b085-b0b5-4a51-ac8b-63e34e4ec6b9
+		summarizeBy: sum
+		sourceColumn: month_num
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: a7619914-b6af-46ca-b62f-36ce6f32a7a0
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a317df42-a383-4264-ab6f-cf77fbdb2c10
+		summarizeBy: none
+		sourceColumn: year_month
+
+		variation Variation
+			isDefault
+			relationship: c178d44a-9d34-4669-a3f9-e1b8334023da
+			defaultHierarchy: LocalDateTable_bc4be149-daf2-42a6-9f19-03b26786fd22.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Pavithran R A\Documents\Codex\2026-09-04\goal-referenced-pasted-text-files-pasted\data\published\dim_date.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date", type date}, {"year", Int64.Type}, {"quarter", Int64.Type}, {"month_num", Int64.Type}, {"month_name", type text}, {"year_month", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
