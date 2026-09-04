@@ -9,4 +9,6 @@ data/processed/
 *.egg-info/
 .env
 outputs/
+reports/customers.csv
+data/published/customers.csv
 !.gitkeep
