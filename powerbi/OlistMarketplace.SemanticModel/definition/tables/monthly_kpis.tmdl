@@ -1,6 +1,18 @@
 table monthly_kpis
 	lineageTag: 7b1a3bca-547e-4b44-bebc-f43a7e3620f2
 
+	measure 'Average AOV' = AVERAGE(monthly_kpis[aov])
+
+	measure 'Cumulative GMV' = MAX(monthly_kpis[cumulative_gmv])
+
+	measure 'Total GMV' = SUM(monthly_kpis[gmv])
+
+	measure 'Total Orders' = SUM(monthly_kpis[orders])
+
+	measure 'GMV MoM %' = AVERAGE(monthly_kpis[gmv_mom])
+
+	measure 'Orders MoM %' = AVERAGE(monthly_kpis[orders_mom])
+
 	column month
 		dataType: dateTime
 		formatString: Long Date
