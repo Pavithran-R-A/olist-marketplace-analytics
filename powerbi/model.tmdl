@@ -1,20 +1,61 @@
-// Power BI-ready semantic specification. Desktop validation unavailable here.
+// TMDL source specification. Validate by opening in Power BI Desktop.
+model OlistMarketplace
+    culture: en-US
+
 table fact_orders
-  column order_id
-  column customer_unique_id
-  column customer_state
-  column purchase_ts
-  column order_status
-  column gmv
-  column freight_value
-  column is_late
-  column delivery_days
-  column review_score
+    column order_id
+        dataType: string
+        sourceColumn: order_id
+    column customer_unique_id
+        dataType: string
+        sourceColumn: customer_unique_id
+    column customer_state
+        dataType: string
+        sourceColumn: customer_state
+    column purchase_ts
+        dataType: dateTime
+        sourceColumn: purchase_ts
+    column order_status
+        dataType: string
+        sourceColumn: order_status
+    column gmv
+        dataType: decimal
+        sourceColumn: gmv
+        formatString: R$ #,##0.00
+    column freight_value
+        dataType: decimal
+        sourceColumn: freight_value
+        formatString: R$ #,##0.00
+    column is_late
+        dataType: boolean
+        sourceColumn: is_late
+    column delivery_days
+        dataType: int64
+        sourceColumn: delivery_days
+    column review_score
+        dataType: int64
+        sourceColumn: review_score
+    measure GMV = SUM(fact_orders[gmv])
+        formatString: R$ #,##0.00
+    measure Orders = DISTINCTCOUNT(fact_orders[order_id])
+        formatString: #,##0
+    measure AOV = DIVIDE([GMV], [Orders])
+        formatString: R$ #,##0.00
+    measure Late Delivery Rate = DIVIDE(CALCULATE([Orders], fact_orders[is_late] = TRUE()), CALCULATE([Orders], fact_orders[order_status] = "delivered"))
+        formatString: 0.0%
 
 table dim_date
-  column date
-  column year
-  column month
+    column date
+        dataType: dateTime
+        sourceColumn: date
+    column year
+        dataType: int64
+        sourceColumn: year
+    column month
+        dataType: string
+        sourceColumn: month
 
-relationship fact_orders[purchase_ts] -> dim_date[date]
+relationship fact_orders_purchase_date
+    fromColumn: fact_orders[purchase_ts]
+    toColumn: dim_date[date]
 

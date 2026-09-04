@@ -63,10 +63,12 @@ See [metric dictionary](docs/metric_dictionary.md) and [methodology](docs/method
 - 8.11% of delivered orders were late.
 - Late orders averaged 2.57 reviews versus 4.29 on time.
 - Freight equaled 16.57% of GMV.
-- Repeat-customer rate was 3.12% in the observed window.
+- Repeat-customer rate was 3.04% after excluding canceled and unavailable orders.
+- Month-one weighted cohort retention was 0.45%; RFM uses dataset quintiles.
 
-Open `dashboard/index.html` locally for the recruiter view. The public repository is
-available at [Pavithran-R-A/olist-marketplace-analytics](https://github.com/Pavithran-R-A/olist-marketplace-analytics).
+Open the [live dashboard](https://pavithran-r-a.github.io/olist-marketplace-analytics/) or
+`dashboard/index.html` locally. The public repository is available at
+[Pavithran-R-A/olist-marketplace-analytics](https://github.com/Pavithran-R-A/olist-marketplace-analytics).
 
 ## Verification status
 

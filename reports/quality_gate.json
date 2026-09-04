@@ -1,0 +1,186 @@
+[
+  {
+    "rule_name": "source_file_completeness",
+    "severity": "critical",
+    "observed_value": 9,
+    "expected_condition": "all 9 expected files",
+    "status": "PASS",
+    "business_implication": "Missing source files invalidate the model."
+  },
+  {
+    "rule_name": "customer_key_uniqueness",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 duplicates",
+    "status": "PASS",
+    "business_implication": "Customer identity joins must be one-to-one."
+  },
+  {
+    "rule_name": "order_key_uniqueness",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 duplicates",
+    "status": "PASS",
+    "business_implication": "Orders must have one source row."
+  },
+  {
+    "rule_name": "item_grain_uniqueness",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 duplicates",
+    "status": "PASS",
+    "business_implication": "Item grain must not duplicate."
+  },
+  {
+    "rule_name": "seller_key_uniqueness",
+    "severity": "warn",
+    "observed_value": 0,
+    "expected_condition": "0 duplicates",
+    "status": "PASS",
+    "business_implication": "Seller joins should remain stable."
+  },
+  {
+    "rule_name": "product_key_uniqueness",
+    "severity": "warn",
+    "observed_value": 0,
+    "expected_condition": "0 duplicates",
+    "status": "PASS",
+    "business_implication": "Product joins should remain stable."
+  },
+  {
+    "rule_name": "orphan_item_order_ids",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 orphan IDs",
+    "status": "PASS",
+    "business_implication": "Orphan items distort GMV."
+  },
+  {
+    "rule_name": "orphan_item_product_ids",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 orphan IDs",
+    "status": "PASS",
+    "business_implication": "Product joins drive category analysis."
+  },
+  {
+    "rule_name": "orphan_item_seller_ids",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 orphan IDs",
+    "status": "PASS",
+    "business_implication": "Seller joins drive fulfillment analysis."
+  },
+  {
+    "rule_name": "orphan_payment_order_ids",
+    "severity": "warn",
+    "observed_value": 0,
+    "expected_condition": "0 preferred",
+    "status": "PASS",
+    "business_implication": "Payment reconciliation requires matching orders."
+  },
+  {
+    "rule_name": "negative_payment_value",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Payment quality affects reconciliation."
+  },
+  {
+    "rule_name": "orphan_review_order_ids",
+    "severity": "warn",
+    "observed_value": 0,
+    "expected_condition": "0 preferred",
+    "status": "PASS",
+    "business_implication": "Review joins affect satisfaction coverage."
+  },
+  {
+    "rule_name": "missing_order_customer_ids",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 missing IDs",
+    "status": "PASS",
+    "business_implication": "Customer analysis requires identity."
+  },
+  {
+    "rule_name": "delivery_before_purchase",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Negative delivery duration is invalid."
+  },
+  {
+    "rule_name": "delivered_missing_timestamp",
+    "severity": "warn",
+    "observed_value": 8,
+    "expected_condition": "0 preferred",
+    "status": "WARN",
+    "business_implication": "Delivery KPIs exclude these rows."
+  },
+  {
+    "rule_name": "estimated_date_before_purchase",
+    "severity": "warn",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Promise dates may be unreliable."
+  },
+  {
+    "rule_name": "invalid_order_status",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Status logic drives all rate metrics."
+  },
+  {
+    "rule_name": "negative_price",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Negative monetary values invalidate GMV."
+  },
+  {
+    "rule_name": "negative_freight_value",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows",
+    "status": "PASS",
+    "business_implication": "Negative monetary values invalidate GMV."
+  },
+  {
+    "rule_name": "review_score_bounds",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 rows outside 1-5",
+    "status": "PASS",
+    "business_implication": "Review comparisons require valid scores."
+  },
+  {
+    "rule_name": "source_order_reconciliation",
+    "severity": "critical",
+    "observed_value": 99441,
+    "expected_condition": "99441 modeled orders",
+    "status": "PASS",
+    "business_implication": "Order counts must reconcile."
+  },
+  {
+    "rule_name": "gmv_reconciliation",
+    "severity": "critical",
+    "observed_value": 13591643.700012088,
+    "expected_condition": "source 13591643.70",
+    "status": "PASS",
+    "business_implication": "Fanout must not inflate GMV."
+  },
+  {
+    "rule_name": "fact_orders_uniqueness",
+    "severity": "critical",
+    "observed_value": 0,
+    "expected_condition": "0 duplicate order IDs",
+    "status": "PASS",
+    "business_implication": "Order fact must retain its declared grain."
+  }
+]

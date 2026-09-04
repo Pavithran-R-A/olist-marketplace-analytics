@@ -1,0 +1,5 @@
+customer_id,customer_unique_id,customer_zip_code_prefix,customer_city,customer_state
+c1,u1,10000,A,SP
+c2,u2,20000,B,RJ
+c3,u3,30000,C,MG
+

@@ -1,45 +1,61 @@
 from __future__ import annotations
 
 import json
+import math
 
+import numpy as np
 from scipy.stats import mannwhitneyu
 
 from .common import connection
 from .config import REPORTS
+from .run_sql import run_sql
+
+
+def _mean_stats(values: np.ndarray) -> dict[str, float]:
+    mean = float(values.mean())
+    se = float(values.std(ddof=1) / math.sqrt(len(values))) if len(values) > 1 else 0.0
+    return {"n": len(values), "mean": mean, "median": float(np.median(values)),
+            "ci95_low": mean - 1.96 * se, "ci95_high": mean + 1.96 * se}
 
 
 def analyse() -> dict[str, object]:
+    run_sql()
     con = connection()
     kpi = con.sql("""
       SELECT SUM(gmv) gmv, COUNT(*) orders, COUNT(DISTINCT customer_unique_id) customers,
-        AVG(gmv) aov, SUM(CASE WHEN order_status='delivered' THEN 1 ELSE 0 END) delivered_orders,
-        SUM(CASE WHEN order_status='canceled' THEN 1 ELSE 0 END) cancelled_orders,
+        AVG(gmv) aov, SUM((order_status='delivered')::INT) delivered_orders,
+        SUM((order_status='canceled')::INT) cancelled_orders,
         AVG(CASE WHEN order_status='delivered' THEN is_late::INT END) late_delivery_rate,
         AVG(review_score) avg_review, AVG(items) items_per_order, SUM(freight_value) freight
       FROM fact_orders
-    """).df().iloc[0].to_dict()
-    monthly = con.sql("SELECT date_trunc('month', purchase_ts) AS month, SUM(gmv) gmv, COUNT(*) orders FROM fact_orders GROUP BY 1 ORDER BY 1").df()
-    category = con.sql("SELECT category, SUM(price) gmv, COUNT(DISTINCT order_id) orders FROM fact_order_items GROUP BY 1 ORDER BY gmv DESC LIMIT 15").df()
-    states = con.sql("SELECT customer_state state, SUM(gmv) gmv, COUNT(*) orders, AVG(is_late::INT) late_rate, AVG(review_score) avg_review FROM fact_orders GROUP BY 1 ORDER BY gmv DESC").df()
-    seller = con.sql("SELECT seller_id, SUM(price) gmv, COUNT(DISTINCT order_id) orders, AVG(CASE WHEN fo.order_status='delivered' THEN fo.is_late::INT END) late_rate FROM fact_order_items oi JOIN fact_orders fo USING(order_id) GROUP BY seller_id HAVING COUNT(DISTINCT order_id)>=20 ORDER BY late_rate DESC, gmv DESC, seller_id LIMIT 20").df()
-    review = con.sql("SELECT is_late, AVG(review_score) avg_review, COUNT(*) orders FROM fact_orders WHERE review_score IS NOT NULL AND order_status='delivered' GROUP BY 1 ORDER BY is_late").df()
-    customers = con.sql("SELECT customer_unique_id, COUNT(*) frequency, SUM(gmv) monetary, date_diff('day', MAX(purchase_ts), (SELECT MAX(purchase_ts) FROM fact_orders)) recency FROM fact_orders GROUP BY 1").df()
-    late = review.loc[review.is_late == True, "avg_review"]
-    ontime = review.loc[review.is_late == False, "avg_review"]
-    customer_groups = [customers.loc[customers.frequency > 1, "customer_unique_id"].nunique(), customers.loc[customers.frequency == 1, "customer_unique_id"].nunique()]
-    if len(late) and len(ontime):
-        late_rows = con.sql("SELECT review_score FROM fact_orders WHERE order_status='delivered' AND is_late AND review_score IS NOT NULL").df().review_score
-        ontime_rows = con.sql("SELECT review_score FROM fact_orders WHERE order_status='delivered' AND NOT is_late AND review_score IS NOT NULL").df().review_score
-        stat = mannwhitneyu(late_rows, ontime_rows, alternative="two-sided")
-        kpi.update({"late_avg_review": float(late.iloc[0]), "ontime_avg_review": float(ontime.iloc[0]), "review_difference": float(late.iloc[0] - ontime.iloc[0]), "mann_whitney_p": float(stat.pvalue)})
-    kpi.update({"repeat_customers": customer_groups[0], "repeat_customer_rate": customer_groups[0] / sum(customer_groups), "freight_to_gmv": float(kpi["freight"] / kpi["gmv"])})
+    """).fetchone()
+    names = ["gmv", "orders", "customers", "aov", "delivered_orders", "cancelled_orders",
+             "late_delivery_rate", "avg_review", "items_per_order", "freight"]
+    result = dict(zip(names, kpi))
+    late = con.sql("SELECT review_score FROM fact_orders WHERE order_status='delivered' AND is_late AND review_score IS NOT NULL").fetchnumpy()["review_score"]
+    ontime = con.sql("SELECT review_score FROM fact_orders WHERE order_status='delivered' AND NOT is_late AND review_score IS NOT NULL").fetchnumpy()["review_score"]
+    late_stats, ontime_stats = _mean_stats(late), _mean_stats(ontime)
+    diff = float(late.mean() - ontime.mean())
+    pooled = math.sqrt(((len(late)-1)*late.var(ddof=1) + (len(ontime)-1)*ontime.var(ddof=1)) / (len(late)+len(ontime)-2)) if len(late) > 1 and len(ontime) > 1 else float("nan")
+    variance = (late.var(ddof=1) / len(late) if len(late) > 1 else 0.0) + (ontime.var(ddof=1) / len(ontime) if len(ontime) > 1 else 0.0)
+    result.update({"late_review": late_stats, "ontime_review": ontime_stats,
+                   "review_difference": diff,
+                   "review_difference_ci95_low": diff - 1.96 * math.sqrt(variance),
+                   "review_difference_ci95_high": diff + 1.96 * math.sqrt(variance),
+                   "mann_whitney_p": float(mannwhitneyu(late, ontime, alternative='two-sided').pvalue),
+                   "cohens_d": diff / pooled})
+    repeat = con.sql("SELECT COUNT(*) FILTER (WHERE frequency > 1), COUNT(*) FROM rfm_customer").fetchone()
+    result.update({"repeat_customers": int(repeat[0]), "repeat_customer_rate": float(repeat[0] / repeat[1]), "freight_to_gmv": float(result["freight"] / result["gmv"])})
+    export_names = ["monthly_kpis", "status_kpis", "category_kpis", "state_kpis", "seller_kpis",
+                    "fulfillment_category", "freight_state", "review_outcomes", "customer_cohorts",
+                    "rfm_segments", "category_pareto"]
     REPORTS.mkdir(parents=True, exist_ok=True)
-    for name, frame in [("monthly", monthly), ("category", category), ("states", states), ("seller", seller), ("review", review), ("customers", customers)]:
-        frame.to_csv(REPORTS / f"{name}.csv", index=False)
-    (REPORTS / "kpis.json").write_text(json.dumps(kpi, indent=2, default=str), encoding="utf-8")
+    for name in export_names:
+        con.table(name).df().to_csv(REPORTS / f"{name}.csv", index=False)
+    (REPORTS / "kpis.json").write_text(json.dumps(result, indent=2, default=str), encoding="utf-8")
     con.close()
-    print(json.dumps(kpi, indent=2, default=str))
-    return kpi
+    print(json.dumps(result, indent=2, default=str))
+    return result
 
 
 if __name__ == "__main__":

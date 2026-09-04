@@ -1,0 +1,3 @@
+is_late,orders,mean_review,median_review
+True,7661,2.566505678109907,2.0
+False,88171,4.294310676601906,5.0

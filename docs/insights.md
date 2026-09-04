@@ -14,8 +14,8 @@ window, suggesting retention deserves a focused operating response.
    difference of -1.73 points. The Mann-Whitney comparison returned p < 0.001; this is
    association, not causal proof.
 4. Freight totaled R$2,251,909.54, equal to 16.57% of GMV.
-5. Only 2,997 of 96,096 observed customers purchased more than once, a repeat-customer
-   rate of 3.12% within this dataset window.
+5. Only 2,888 of 96,096 observed customers purchased more than once, a 3.04% repeat-customer
+   rate after excluding canceled and unavailable orders. Month-one cohort retention was 0.45%.
 
 # 5 Recommended Actions
 
@@ -25,7 +25,7 @@ window, suggesting retention deserves a focused operating response.
    capacity, promised dates, and seller handoff performance in RJ.
 3. Finding -> freight is 16.57% of GMV -> review packaging, seller shipping policies, and
    high-freight item categories using a freight-burden monitor.
-4. Finding -> repeat rate is 3.12% -> test post-delivery reactivation journeys and measure
+4. Finding -> repeat rate is 3.04% -> test post-delivery reactivation journeys and measure
    second-order conversion by cohort.
 5. Finding -> health_beauty leads categories at R$1.26M GMV -> protect service levels for
    leading categories while targeting cross-sell into adjacent repeatable categories.
@@ -34,7 +34,10 @@ window, suggesting retention deserves a focused operating response.
 
 GMV sums item prices. Items and payments remain separate grains. Delivery flags require a
 delivered status plus both actual and estimated dates. Review scores are averaged per order.
-Customer identity uses `customer_unique_id`. Full computed outputs are under `reports/`.
+Customer identity uses `customer_unique_id`. Cohort analysis excludes canceled and unavailable
+orders; month-one weighted retention was 0.45%. RFM uses dataset quintiles, with lower
+recency ranked better and higher frequency or monetary value ranked better. Full computed
+outputs are under `reports/`.
 
 # Limitations
 
@@ -42,4 +45,3 @@ The data is historical and anonymized. It does not contain marketplace commissio
 cost-to-serve, carrier identity, promised SLA versions, or customer marketing exposure.
 Repeat rate is limited by the observation window. Geolocation duplicates were excluded from
 the core model. Dashboard values are descriptive, not causal forecasts.
-

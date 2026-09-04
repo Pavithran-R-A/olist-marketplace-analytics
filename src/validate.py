@@ -3,21 +3,28 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import duckdb
 import pandas as pd
 
 from .common import csv_files
 from .config import REPORTS
+from .quality import run_quality_gate
 
 
 def profile_file(path: Path) -> dict[str, object]:
-    frame = pd.read_csv(path)
+    con = duckdb.connect()
+    columns = [row[0] for row in con.sql("SELECT column_name FROM (DESCRIBE SELECT * FROM read_csv_auto(?))", params=[str(path)]).fetchall()]
+    quoted = ", ".join('"' + name.replace('"', '""') + '"' for name in columns)
+    missing = " + ".join(f"CASE WHEN \"{name.replace(chr(34), chr(34) * 2)}\" IS NULL THEN 1 ELSE 0 END" for name in columns)
+    row = con.sql(f"SELECT COUNT(*) AS row_count, COUNT(DISTINCT ({quoted})) AS distinct_rows, SUM({missing}) AS missing_values FROM read_csv_auto(?)", params=[str(path)]).fetchone()
+    con.close()
     return {
         "filename": path.name,
-        "rows": len(frame),
-        "columns": len(frame.columns),
-        "duplicate_rows": int(frame.duplicated().sum()),
-        "missing_values": int(frame.isna().sum().sum()),
-        "columns_list": list(frame.columns),
+        "rows": int(row[0]),
+        "columns": len(columns),
+        "duplicate_rows": int(row[0] - row[1]),
+        "missing_values": int(row[2] or 0),
+        "columns_list": columns,
     }
 
 
@@ -42,6 +49,7 @@ def validate() -> list[dict[str, object]]:
         reviews = pd.read_csv(by_name["olist_order_reviews_dataset.csv"])
         rules["duplicate_review_order_pairs"] = int(reviews.duplicated(["review_id", "order_id"]).sum())
     (REPORTS / "quality_rules.json").write_text(json.dumps(rules, indent=2), encoding="utf-8")
+    run_quality_gate()
     print(json.dumps(profiles, indent=2))
     return profiles
 

@@ -1,0 +1,5 @@
+review_id,order_id,review_score,review_comment_title,review_comment_message,review_creation_date,review_answer_timestamp
+r1,o1,1,,,2018-01-13,2018-01-14
+r2,o2,5,,,2018-02-10,2018-02-11
+r3,o3,4,,,2018-01-16,2018-01-17
+

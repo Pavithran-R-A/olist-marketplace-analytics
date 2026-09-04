@@ -1,9 +1,10 @@
+import os
 from pathlib import Path
 
 import duckdb
 import pytest
 
-DB = Path("data/processed/olist.duckdb")
+DB = Path(os.environ.get("OLIST_DB_PATH", "data/processed/olist.duckdb"))
 
 
 pytestmark = pytest.mark.skipif(not DB.exists(), reason="full-data model not acquired")
@@ -16,7 +17,7 @@ def test_order_model_reconciles_source_orders_and_gmv():
     model_gmv = con.sql("SELECT SUM(gmv) FROM fact_orders").fetchone()[0]
     source_gmv = con.sql("SELECT SUM(price) FROM raw_order_items").fetchone()[0]
     con.close()
-    assert order_count == source_count == 99441
+    assert order_count == source_count
     assert model_gmv == pytest.approx(source_gmv)
 
 
@@ -25,4 +26,3 @@ def test_fact_orders_has_no_duplicate_order_keys():
     duplicates = con.sql("SELECT COUNT(*) - COUNT(DISTINCT order_id) FROM fact_orders").fetchone()[0]
     con.close()
     assert duplicates == 0
-

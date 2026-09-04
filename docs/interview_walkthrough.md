@@ -18,8 +18,9 @@ does not identify causation.
 ## Technical walkthrough
 
 The raw CSVs are profiled first. DuckDB loads them locally. SQL creates the order and item
-facts, while Python exports reproducible tables and dashboard data. Tests cover KPI math,
-timestamp logic, late flags, negative monetary detection, and RFM labeling. Power BI assets
+facts, cohort retention, quintile-based RFM segments, and business outputs. Python exports
+reproducible tables and dashboard data. Tests cover KPI math, timestamp logic, late flags,
+negative monetary detection, and RFM labeling. Power BI assets
 define measures and relationships, but Desktop execution is not available in this environment.
 
 ## Likely questions
@@ -31,4 +32,3 @@ define measures and relationships, but Desktop execution is not available in thi
 - **How is late delivery defined?** Actual customer delivery after estimated date.
 - **How is repeat defined?** More than one order by unique customer identity.
 - **What would production change?** Add tested SLA history, carrier data, costs, and monitoring.
-
