@@ -57,8 +57,18 @@ See [metric dictionary](docs/metric_dictionary.md) and [methodology](docs/method
 - Power BI source specification and DAX under `powerbi/`.
 - Tests, CI, insights, resume bullets, and interview walkthrough.
 
+## Verified headline findings
+
+- R$13.59M GMV across 99,441 orders; AOV was R$136.68.
+- 8.11% of delivered orders were late.
+- Late orders averaged 2.57 reviews versus 4.29 on time.
+- Freight equaled 16.57% of GMV.
+- Repeat-customer rate was 3.12% in the observed window.
+
+Open `dashboard/index.html` locally for the recruiter view. The public repository is
+available at [Pavithran-R-A/olist-marketplace-analytics](https://github.com/Pavithran-R-A/olist-marketplace-analytics).
+
 ## Verification status
 
 This README is updated after the pipeline runs. Claims in the final report distinguish
 verified local outputs from unavailable external or Power BI Desktop validation.
-
