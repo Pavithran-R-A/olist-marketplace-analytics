@@ -11,4 +11,6 @@ data/processed/
 outputs/
 reports/customers.csv
 data/published/customers.csv
+tests/fixture_processed/
+tests/fixture_published/
 !.gitkeep
