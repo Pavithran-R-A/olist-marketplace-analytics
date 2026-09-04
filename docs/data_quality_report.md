@@ -12,6 +12,6 @@
 
 The executable gate writes `reports/quality_gate.json`. It records rule name, severity,
 observed value, expected condition, status, and business implication. Current execution
-contains 18 checks: 17 pass and one warning for delivered orders missing timestamps. No
+contains 23 checks: 22 pass and one warning for delivered orders missing timestamps. No
 critical failures occurred. Full source counts are
 in `reports/source_profile.csv`. Critical failures raise an exception and stop the pipeline.
