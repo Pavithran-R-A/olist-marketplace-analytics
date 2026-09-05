@@ -1,20 +1,20 @@
-# Olist Marketplace Performance Intelligence
+# Olist Marketplace Analytics
 
 [![CI](https://github.com/Pavithran-R-A/olist-marketplace-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/Pavithran-R-A/olist-marketplace-analytics/actions/workflows/ci.yml)
 [![GitHub Pages](https://img.shields.io/badge/dashboard-live-2ea44f)](https://pavithran-r-a.github.io/olist-marketplace-analytics/)
 [![Power BI](https://img.shields.io/badge/Power%20BI-Desktop%20validated-F2C811)](powerbi/OlistMarketplace.pbip)
 
-End-to-end marketplace analytics across **99,441 orders** and **R$13.59M GMV**, built with SQL, DuckDB, Python, statistical analysis, DAX, Power BI, automated data-quality checks, and CI-validated reporting.
+Analytics project built on the public Olist ecommerce dataset. The pipeline validates the source data, builds an order-grain DuckDB model, derives reusable KPI tables in SQL, runs statistical analysis in Python, and publishes reconciled outputs to Power BI and a static web dashboard.
 
-**Project status: complete and recruiter-ready.** The Power BI project was opened, validated, saved, and reopened in Power BI Desktop with zero Problems. The public dashboard is deployed through GitHub Pages and the automated fixture pipeline is enforced in CI.
+The analysis covers **99,441 orders** and **R$13.59M in item GMV**. The Power BI project has been opened, saved, and reopened in Power BI Desktop with zero reported Problems, and its headline measures reconcile with the SQL and Python outputs. CI runs the fixture-backed transformation, validation, analysis, dashboard build, linting, and tests without depending on Kaggle credentials or network access.
 
 - **Live dashboard:** https://pavithran-r-a.github.io/olist-marketplace-analytics/
 - **Power BI project:** [`powerbi/OlistMarketplace.pbip`](powerbi/OlistMarketplace.pbip)
-- **Final readiness audit:** [`docs/hiring_readiness_audit.md`](docs/hiring_readiness_audit.md)
+- **Verification audit:** [`docs/hiring_readiness_audit.md`](docs/hiring_readiness_audit.md)
 - **Methodology:** [`docs/methodology.md`](docs/methodology.md)
 - **Metric dictionary:** [`docs/metric_dictionary.md`](docs/metric_dictionary.md)
 
-## Recruiter snapshot
+## Key results
 
 | KPI | Verified result |
 |---|---:|
@@ -27,15 +27,21 @@ End-to-end marketplace analytics across **99,441 orders** and **R$13.59M GMV**, 
 | Freight / GMV | 16.57% |
 | Month-one weighted cohort retention | 0.45% |
 
-Additional customer-experience finding: delivered late orders averaged **2.57** review points versus **4.29** for on-time orders.
+Delivered late orders averaged **2.57** review points, compared with **4.29** for on-time orders.
 
-> **Metric definition:** GMV means item merchandise value in this project. It does **not** mean Olist recognized revenue.
+> **Metric definition:** GMV is item merchandise value in this project. It is not Olist recognized revenue.
 
-## Business problem
+## Analysis scope
 
-Marketplace leadership needs evidence about commercial activity, fulfillment reliability, freight burden, customer satisfaction, and repeat purchasing before prioritizing operational action.
+The project examines five areas of marketplace performance:
 
-The project answers that problem through a reproducible analytical path rather than a dashboard-only deliverable.
+- commercial activity and order value;
+- fulfillment reliability and delivery delays;
+- freight cost relative to merchandise value;
+- customer-review outcomes;
+- repeat purchasing, cohorts, RFM segments, and concentration.
+
+The reporting layer is built from the same modeled and reconciled data used by the analysis rather than maintaining separate dashboard-only calculations.
 
 ```mermaid
 flowchart TD
@@ -45,32 +51,32 @@ flowchart TD
   D --> E[Reusable SQL KPI tables]
   E --> F[Python statistics and figures]
   E --> G[Power BI semantic model and DAX]
-  E --> H[Recruiter-facing web dashboard]
-  F --> I[Evidence-backed findings and actions]
+  E --> H[Static web dashboard]
+  F --> I[Documented findings]
 ```
 
-## What is included
+## Repository contents
 
-- **Data acquisition and profiling** of the nine-file public Olist dataset.
+- **Data acquisition and profiling** for the nine-file public Olist dataset.
 - **Order-grain analytical model** with explicit metric definitions and reconciliation.
-- **SQL analytics** covering KPIs, customers, fulfillment, sellers, freight, cohort retention, RFM segmentation, and Pareto concentration.
+- **SQL analytics** for KPIs, customers, fulfillment, sellers, freight, cohort retention, RFM segmentation, and Pareto concentration.
 - **Python analysis** using pandas, NumPy, SciPy, and Plotly.
-- **Data-quality gates** and automated reconciliation tests.
-- **Power BI Desktop project** using PBIP/PBIR, a TMDL semantic model, explicit DAX measures, and three report pages.
-- **Static recruiter dashboard** deployed through GitHub Pages.
-- **Automated CI fixture pipeline** covering transformation, validation, analysis, dashboard generation, linting, dependency integrity, and pytest.
+- **Data-quality checks** and automated metric reconciliation tests.
+- **Power BI project** using PBIP/PBIR, a TMDL semantic model, explicit DAX measures, and three report pages.
+- **Static web dashboard** deployed through GitHub Pages.
+- **CI fixture pipeline** covering transformation, validation, analysis, dashboard generation, linting, dependency integrity, and pytest.
 
 ## Power BI report
 
 The validated project is [`OlistMarketplace.pbip`](powerbi/OlistMarketplace.pbip). It uses Desktop-generated PBIR and TMDL with imported monthly, category, state, RFM, order-grain, and date-model outputs.
 
-The report contains exactly three pages:
+The report contains three pages:
 
 1. **Executive Overview**
 2. **Fulfillment and Customer Experience**
 3. **Customer and Growth**
 
-Desktop reopened the saved PBIP successfully with **zero Problems**, and the headline measures reconcile to the verified Python and SQL outputs.
+Power BI Desktop reopened the saved project successfully with **zero Problems**, and the headline measures reconcile with the verified Python and SQL outputs.
 
 ### Executive Overview
 
@@ -101,7 +107,7 @@ pytest
 
 The acquisition command uses Kaggle public access when available. Raw source files are intentionally ignored by Git. CI runs against committed fixtures so validation does not depend on external credentials or network availability.
 
-## Quality and verification
+## Verification
 
 The CI workflow runs:
 
@@ -110,10 +116,10 @@ The CI workflow runs:
 3. fixture transformation;
 4. validation and data-quality checks;
 5. analysis and KPI generation;
-6. recruiter-dashboard generation;
+6. dashboard generation;
 7. pytest reconciliation and regression tests.
 
-Power BI Desktop validation is an explicit manual verification boundary because Desktop is not available on GitHub's Linux runner. The saved PBIP/PBIR/TMDL artifacts and screenshots are committed for recruiter inspection.
+Power BI Desktop validation remains an explicit manual boundary because Desktop is not available on GitHub's Linux runner. The saved PBIP/PBIR/TMDL artifacts and report screenshots are committed so the desktop result can be inspected separately from CI.
 
 ## Stack
 
@@ -128,8 +134,4 @@ Source: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/da
 
 The Olist dataset is published under **CC BY-NC-SA 4.0**. Original project code is MIT-licensed. Dataset-derived material is documented separately in [`DATA_LICENSE.md`](DATA_LICENSE.md); the repository's MIT license does not override the source dataset license.
 
-## Resume-ready summary
-
-> Built an order-grain marketplace analytics pipeline across 99,441 orders and R$13.59M GMV using Python, SQL, DuckDB, DAX and Power BI, delivering reconciled KPIs for revenue-proxy GMV, fulfillment, customer experience and repeat purchasing with automated tests and CI.
-
-For a deeper evidence checklist, see [`docs/hiring_readiness_audit.md`](docs/hiring_readiness_audit.md).
+For the detailed verification checklist and remaining caveats, see [`docs/hiring_readiness_audit.md`](docs/hiring_readiness_audit.md).
